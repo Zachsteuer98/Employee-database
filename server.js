@@ -1,5 +1,5 @@
 const mysql = require('mysql2')
-const inqurier = require('inquirer')
+const inquirer = require('inquirer')
 const cTable = require('console.table')
 
 require('dotenv').config();
@@ -17,7 +17,90 @@ const db = mysql.createConnection(
     console.log('Connected to the employee database.')
   );
 
-db.query('SELECT * FROM department', (err, rows) => {
-    console.log(rows);
-})
+  db.connect(function(err) {
+    if (err) throw err;
+   
+    console.log ("======================================");
+    console.log ("");
+    console.log ("   WELCOME TO THE EMPLOYEE DATABASE   ");
+    console.log ("");
+    console.log ("======================================");
+    runEmployeeDB();
+  });
+
+
+// LIST OF CHOICES FOR USER ___________________________
+
+function runEmployeeDB() {
+    inquirer.prompt([
+    {
+    type: "list",
+    message: "What would you like to do?",
+    name: "action",
+    choices: [
+            "View All Departments", 
+            "View All Roles",
+            "View All Employees",
+            "Add Department",
+            "Add Role",
+            "Add Employee",
+            "Update an Employee Role",
+            "Exit"
+            ]
+    }
+]).then(function(choices) {
+        switch (choices.action) {
+
+            //View All Departments
+            case "View All Departments":
+              viewAllDepartments();
+            break;
+
+            //View All Roles
+            case "View All Roles":
+              viewAllRoles();
+              break;
+
+            //EXIT
+            case "Exit":
+                console.log ("===============================================");
+                console.log ("");
+                console.log ("   THANK YOU FOR USING THE EMPLOYEE DATABASE   ");
+                console.log ("");
+                console.log ("===============================================");
+                db.end();
+            break;
+            }
+    })
+};
+
+//View All Departments
+function viewAllDepartments() {
+
+  db.query("SELECT department.id AS id, department.name AS name FROM department",
+  function(err, res) {
+    if (err) throw err
+    console.log("------------------------")
+    console.log(" === DEPARTMENT LIST ===")
+    console.log("------------------------")
+    console.table(res)
+    runEmployeeDB()
+  })
+}
+
+//View ALL Roles
+function viewAllRoles() {
+
+  db.query("SELECT role.id AS id, role.title AS title, role.salary AS salary FROM role",
+  function(err, res) {
+    if (err) throw err
+    console.log("------------------------")
+    console.log(" === ROLE LIST ===")
+    console.log("------------------------")
+    console.table(res)
+    runEmployeeDB()
+  })
+}
+
+
 
