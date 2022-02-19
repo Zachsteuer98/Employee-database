@@ -61,6 +61,11 @@ function runEmployeeDB() {
               viewAllRoles();
               break;
 
+            //View All Employees
+            case "View All Employees":
+              viewAllEmployees();
+              break;
+
             //EXIT
             case "Exit":
                 console.log ("===============================================");
@@ -96,6 +101,19 @@ function viewAllRoles() {
     if (err) throw err
     console.log("------------------------")
     console.log(" === ROLE LIST ===")
+    console.log("------------------------")
+    console.table(res)
+    runEmployeeDB()
+  })
+}
+
+function viewAllEmployees() {
+
+  db.query("SELECT employee.id AS id, employee.first_name AS first_name, employee.last_name AS last_name, employee.role_id AS role_id, employee.manager_id AS manager_id FROM employee",
+  function(err, res) {
+    if (err) throw err
+    console.log("------------------------")
+    console.log(" === EMPLOYEE LIST ===")
     console.log("------------------------")
     console.table(res)
     runEmployeeDB()
