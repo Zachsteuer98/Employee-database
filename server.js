@@ -291,7 +291,7 @@ function addEmployee() {
   })
 }
 
-// ROLE ARRAY SET UP FOR EMPLOYEE ADDITION 
+// Select role 
 let roleArray = [];                                            
 function selectRole() {
   db.query("SELECT * FROM role", function(err, res) {
@@ -307,7 +307,7 @@ function selectRole() {
   return roleArray;
 }
 
-// UPDATE EMPLOYEE ROLE 
+// Update employee role 
 function updateEmployeeRole() {
   db.query("SELECT * FROM employee", function(err, res) {
     if (err) throw err
